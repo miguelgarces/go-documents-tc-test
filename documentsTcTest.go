@@ -1,9 +1,11 @@
 package documentsTcTestPackage
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 )
@@ -12,17 +14,28 @@ func CreatePdf(data map[string]interface{}, pathpdf string) bool {
 
 	// Prepare Data to File Pdf
 	storefile := generateJsonFileToNode(data)
-	command := formuleCommandLibraryNodejs(storefile, pathpdf)
+
+	// Prepare command
+	cmd := formuleCommandLibraryNodejs(storefile, pathpdf)
+
+	var out bytes.Buffer
+	var stderr bytes.Buffer
+
+	cmd.Stdout = &out
+	cmd.Stderr = &stderr
 
 	// Execute node
-	result, err := exec.Command("node", command).Output()
+	err := cmd.Run()
+
+	// Delete file .json
+	deleteJsonFile(storefile)
 
 	if err != nil {
+		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
 		panic(err)
 	}
 
-	output := string(result)
-	fmt.Println(output)
+	fmt.Println("Result: " + out.String())
 	return true
 }
 
@@ -44,16 +57,17 @@ func generateJsonFileToNode(data map[string]interface{}) string {
 	return storefile
 }
 
-func formuleCommandLibraryNodejs(storefile string, pathpdf string) string {
+func formuleCommandLibraryNodejs(storefile string, pathpdf string) *exec.Cmd {
 
 	command, err := filepath.Abs("./modules/library-documents-tc-test/build/commands/create-pdf.js")
-	//command, err := filepath.Abs("./node-pdfs/build/script-create-file.js")
 
 	if err != nil {
 		panic(err)
 	}
 
-	command += "-i " + storefile + " -o " + pathpdf
+	return exec.Command("node", command, "-i "+storefile, "-o "+pathpdf)
+}
 
-	return command
+func deleteJsonFile(storefile string) {
+	os.Remove(storefile)
 }
