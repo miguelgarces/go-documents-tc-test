@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 )
 
+// Create Pdf using library frontend rendering with react-df
 func CreatePdf(data map[string]interface{}, pathpdf string) bool {
 
 	// Prepare Data to File Pdf
@@ -35,7 +36,6 @@ func CreatePdf(data map[string]interface{}, pathpdf string) bool {
 		panic(err)
 	}
 
-	fmt.Println("Result: " + out.String())
 	return true
 }
 
