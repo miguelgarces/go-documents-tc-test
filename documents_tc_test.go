@@ -1,4 +1,4 @@
-package documentsTcTestPackage
+package documents_tc
 
 import (
 	"fmt"
