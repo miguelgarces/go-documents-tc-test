@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 )
 
+const sourcelibrary string = "./pkg/library-documents-tc-test/build/commands/create-pdf.js"
+
 // Create Pdf using library frontend rendering with react-df
 func CreatePdf(data map[string]interface{}, pathpdf string) bool {
 
@@ -59,7 +61,7 @@ func generateJsonFileToNode(data map[string]interface{}) string {
 
 func formuleCommandLibraryNodejs(storefile string, pathpdf string) *exec.Cmd {
 
-	command, err := filepath.Abs("./modules/library-documents-tc-test/build/commands/create-pdf.js")
+	command, err := filepath.Abs(sourcelibrary)
 
 	if err != nil {
 		panic(err)
