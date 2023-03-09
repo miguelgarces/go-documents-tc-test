@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 )
 
-const sourcelibrary string = "./pkg/library-documents-tc-test/build/commands/create-pdf.js"
+const sourcelibrary string = "./pkg/library-documents-tc-test/dist/command.js"
 
 // Create Pdf using library frontend rendering with react-df
 func CreatePdf(data map[string]interface{}, pathpdf string) bool {
