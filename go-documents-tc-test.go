@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 )
 
-const sourcelibrary string = "./pkg/library-documents-tc-test/dist/command.js"
+const sourcelibrary string = "library-documents-tc-test/dist/command.js"
 
 // Create Pdf using library frontend rendering with react-df
 func CreatePdf(data map[string]interface{}, pathpdf string) bool {
@@ -61,15 +61,23 @@ func generateJsonFileToNode(data map[string]interface{}) string {
 
 func formuleCommandLibraryNodejs(storefile string, pathpdf string) *exec.Cmd {
 
-	command, err := filepath.Abs(sourcelibrary)
+	path_root := RootDir()
+	path_env_pkg := os.Getenv("PATH_PKG_NODE_FRONTEND")
 
-	if err != nil {
-		panic(err)
+	if path_env_pkg == "" {
+		path_env_pkg = "pkg/"
 	}
+
+	command := path_root + "/" + path_env_pkg + sourcelibrary
 
 	return exec.Command("node", command, "-i "+storefile, "-o "+pathpdf)
 }
 
 func deleteJsonFile(storefile string) {
 	os.Remove(storefile)
+}
+
+func RootDir() string {
+	dir, _ := os.Getwd()
+	return dir
 }
