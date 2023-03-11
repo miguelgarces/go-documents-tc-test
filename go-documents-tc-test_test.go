@@ -26,7 +26,7 @@ func Test_CreatePdf_GeneratePdf(t *testing.T) {
 		panic(err)
 	}
 
-	result := CreatePdf(data, path_output)
+	result := CreatePdf(data, path_output, true)
 
 	if !result {
 		t.Errorf("\"CreatePdf()\" FAILED, expected -> %v, got -> %v", true, result)

@@ -12,9 +12,12 @@ import (
 
 const sourcelibrary string = "library-documents-tc-test/dist/command.js"
 
-// Create Pdf using library frontend rendering with react-df
-func CreatePdf(data map[string]interface{}, pathpdf string) bool {
+var mode_debug = false
 
+// Create Pdf using library frontend rendering with react-df
+func CreatePdf(data map[string]interface{}, pathpdf string, debug bool) bool {
+
+	mode_debug = debug
 	// Prepare Data to File Pdf
 	storefile := generateJsonFileToNode(data)
 
@@ -69,6 +72,10 @@ func formuleCommandLibraryNodejs(storefile string, pathpdf string) *exec.Cmd {
 	}
 
 	command := path_root + "/" + path_env_pkg + sourcelibrary
+
+	if mode_debug {
+		fmt.Println(command)
+	}
 
 	return exec.Command("node", command, "-i "+storefile, "-o "+pathpdf)
 }
