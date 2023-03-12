@@ -34,7 +34,7 @@ func CreatePdf(data map[string]interface{}, pathpdf string, debug bool) bool {
 	err := cmd.Run()
 
 	// Delete file .json
-	deleteJsonFile(storefile)
+	//deleteJsonFile(storefile)
 
 	if err != nil {
 		fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
